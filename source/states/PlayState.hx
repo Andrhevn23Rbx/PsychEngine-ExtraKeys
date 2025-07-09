@@ -225,7 +225,7 @@ class PlayState extends MusicBeatState
 
 	// how big to stretch the pixel art assets
 	public static var daPixelZoom:Float = 6;
-	private var singAnimations:Array<String> = ['singLEFT', 'singDOWN', 'singUP', 'singRIGHT', 'singUP'];
+	private var singAnimations:Array<String> = ['singLEFT', 'singDOWN', 'singUP', 'singRIGHT'];
 
 	public var inCutscene:Bool = false;
 	public var skipCountdown:Bool = false;
@@ -257,7 +257,7 @@ class PlayState extends MusicBeatState
 	public var introSoundsSuffix:String = '';
 
 	// Less laggy controls
-	private var keysArray:Array<Dynamic>;
+	private var keysArray:Array<String>;
 	public var songName:String;
 
 	// Callbacks for stages
@@ -279,69 +279,10 @@ class PlayState extends MusicBeatState
 		playbackRate = ClientPrefs.getGameplaySetting('songspeed');
 
 		keysArray = [
-			[
-			'note_1'
-			],
-			[
-			'note_2a',
-			'note_2b'
-			],
-			[
-			'note_3a',
-			'note_3b',
-			'note_3c'
-			],
-			[
 			'note_left',
 			'note_down',
 			'note_up',
 			'note_right'
-			],
-			[
-			'note_5a',
-			'note_5b',
-			'note_5c',
-			'note_5d',
-			'note_5e'
-			],
-			[
-			'note_6a',
-			'note_6b',
-			'note_6c',
-			'note_6d',
-			'note_6e',
-			'note_6f'
-			],
-			[
-			'note_7a',
-			'note_7b',
-			'note_7c',
-			'note_7d',
-			'note_7e',
-			'note_7f',
-			'note_7g'
-			],
-			[
-			'note_8a',
-			'note_8b',
-			'note_8c',
-			'note_8d',
-			'note_8e',
-			'note_8f',
-			'note_8g',
-			'note_8h'
-			],
-			[
-			'note_9a',
-			'note_9b',
-			'note_9c',
-			'note_9d',
-			'note_9e',
-			'note_9f',
-			'note_9g',
-			'note_9h',
-			'note_9i'
-			]
 		];
 
 		if(FlxG.sound.music != null)
@@ -371,12 +312,6 @@ class PlayState extends MusicBeatState
 
 		if (SONG == null)
 			SONG = Song.loadFromJson('tutorial');
-
-		if (SONG.mania == null || SONG.mania > 8 || SONG.mania < 0)
-			SONG.mania = 3;
-		
-		Main.mania = SONG.mania;
-		setOnScripts('mania', Main.mania);
 
 		Conductor.mapBPMChanges(SONG);
 		Conductor.bpm = SONG.bpm;
@@ -1383,10 +1318,10 @@ class PlayState extends MusicBeatState
 			for (songNotes in section.sectionNotes)
 			{
 				var daStrumTime:Float = songNotes[0];
-				var daNoteData:Int = Std.int(songNotes[1] % (Main.mania+1));
+				var daNoteData:Int = Std.int(songNotes[1] % 4);
 				var gottaHitNote:Bool = section.mustHitSection;
 
-				if (songNotes[1] > Main.mania)
+				if (songNotes[1] > 3)
 				{
 					gottaHitNote = !section.mustHitSection;
 				}
@@ -1400,7 +1335,7 @@ class PlayState extends MusicBeatState
 				var swagNote:Note = new Note(daStrumTime, daNoteData, oldNote);
 				swagNote.mustPress = gottaHitNote;
 				swagNote.sustainLength = songNotes[2];
-				swagNote.gfNote = (section.gfSection && (songNotes[1]<(Main.mania+1)));
+				swagNote.gfNote = (section.gfSection && (songNotes[1]<4));
 				swagNote.noteType = songNotes[3];
 				if(!Std.isOfType(songNotes[3], String)) swagNote.noteType = ChartingState.noteTypeList[songNotes[3]]; //Backward compatibility + compatibility with Week 7 charts
 
@@ -1418,7 +1353,7 @@ class PlayState extends MusicBeatState
 
 						var sustainNote:Note = new Note(daStrumTime + (Conductor.stepCrochet * susNote), daNoteData, oldNote, true);
 						sustainNote.mustPress = gottaHitNote;
-						sustainNote.gfNote = (section.gfSection && (songNotes[1]<(Main.mania+1)));
+						sustainNote.gfNote = (section.gfSection && (songNotes[1]<4));
 						sustainNote.noteType = swagNote.noteType;
 						sustainNote.scrollFactor.set();
 						sustainNote.parent = swagNote;
@@ -1448,7 +1383,7 @@ class PlayState extends MusicBeatState
 						else if(ClientPrefs.data.middleScroll)
 						{
 							sustainNote.x += 310;
-							if(daNoteData > Note.midArray[Main.mania]) //Up and Right
+							if(daNoteData > 1) //Up and Right
 								sustainNote.x += FlxG.width / 2 + 25;
 						}
 					}
@@ -1461,7 +1396,7 @@ class PlayState extends MusicBeatState
 				else if(ClientPrefs.data.middleScroll)
 				{
 					swagNote.x += 310;
-					if(daNoteData > Note.midArray[Main.mania]) //Up and Right
+					if(daNoteData > 1) //Up and Right
 					{
 						swagNote.x += FlxG.width / 2 + 25;
 					}
@@ -1550,7 +1485,7 @@ class PlayState extends MusicBeatState
 	{
 		var strumLineX:Float = ClientPrefs.data.middleScroll ? STRUM_X_MIDDLESCROLL : STRUM_X;
 		var strumLineY:Float = ClientPrefs.data.downScroll ? (FlxG.height - 150) : 50;
-		for (i in 0...(Main.mania+1))
+		for (i in 0...4)
 		{
 			// FlxG.log.add(i);
 			var targetAlpha:Float = 1;
@@ -1578,7 +1513,7 @@ class PlayState extends MusicBeatState
 				if(ClientPrefs.data.middleScroll)
 				{
 					babyArrow.x += 310;
-					if(i > Note.midArray[Main.mania]) { //Up and Right
+					if(i > 1) { //Up and Right
 						babyArrow.x += FlxG.width / 2 + 25;
 					}
 				}
@@ -2654,7 +2589,7 @@ class PlayState extends MusicBeatState
 	{
 
 		var eventKey:FlxKey = event.keyCode;
-		var key:Int = getKeyFromEvent(keysArray[Main.mania], eventKey);
+		var key:Int = getKeyFromEvent(keysArray, eventKey);
 
 		if (!controls.controllerMode)
 		{
@@ -2741,7 +2676,7 @@ class PlayState extends MusicBeatState
 	private function onKeyRelease(event:KeyboardEvent):Void
 	{
 		var eventKey:FlxKey = event.keyCode;
-		var key:Int = getKeyFromEvent(keysArray[Main.mania], eventKey);
+		var key:Int = getKeyFromEvent(keysArray, eventKey);
 		if(!controls.controllerMode && key > -1) keyReleased(key);
 	}
 
@@ -2783,8 +2718,7 @@ class PlayState extends MusicBeatState
 		var holdArray:Array<Bool> = [];
 		var pressArray:Array<Bool> = [];
 		var releaseArray:Array<Bool> = [];
-		var keysStringArray:Array<String> = keysArray[Main.mania];
-		for (key in keysStringArray)
+		for (key in keysArray)
 		{
 			holdArray.push(controls.pressed(key));
 			if(controls.controllerMode)
@@ -2924,7 +2858,7 @@ class PlayState extends MusicBeatState
 			var suffix:String = '';
 			if(note != null) suffix = note.animSuffix;
 
-			var animToPlay:String = singAnimations[Note.gfxHud[Main.mania][Std.int(Math.abs(direction))]] + 'miss' + suffix;
+			var animToPlay:String = singAnimations[Std.int(Math.abs(Math.min(singAnimations.length-1, direction)))] + 'miss' + suffix;
 			char.playAnim(animToPlay, true);
 
 			if(char != gf && lastCombo > 5 && gf != null && gf.animOffsets.exists('sad'))
@@ -2956,7 +2890,7 @@ class PlayState extends MusicBeatState
 					altAnim = '-alt';
 
 			var char:Character = dad;
-			var animToPlay:String = singAnimations[Note.gfxHud[Main.mania][Std.int(Math.abs(note.noteData))]] + altAnim;
+			var animToPlay:String = singAnimations[Std.int(Math.abs(Math.min(singAnimations.length-1, note.noteData)))] + altAnim;
 			if(note.gfNote) char = gf;
 
 			if(char != null)
@@ -3011,7 +2945,7 @@ class PlayState extends MusicBeatState
 		}
 
 		if(!note.noAnimation) {
-			var animToPlay:String = singAnimations[Note.gfxHud[Main.mania][Std.int(Math.abs(note.noteData))]];
+			var animToPlay:String = singAnimations[Std.int(Math.abs(Math.min(singAnimations.length-1, note.noteData)))];
 
 			var char:Character = boyfriend;
 			var animCheck:String = 'hey';
@@ -3047,7 +2981,7 @@ class PlayState extends MusicBeatState
 		if (!note.isSustainNote)
 		{
 			combo++;
-			if(combo > 9999) combo = 9999;
+			if(combo > 999999999999) combo = 999999999999;
 			popUpScore(note);
 		}
 		var gainHealth:Bool = true; // prevent health gain, *if* sustains are treated as a singular note
@@ -3069,11 +3003,8 @@ class PlayState extends MusicBeatState
 	public function spawnNoteSplashOnNote(note:Note) {
 		if(note != null) {
 			var strum:StrumNote = playerStrums.members[note.noteData];
-			if(strum != null) {
-				var x:Float = strum.x + Note.swidths[Main.mania] / 2 - Note.swagWidth / 2;
-				var y:Float = strum.y + Note.swidths[Main.mania] / 2 - Note.swagWidth / 2;
-				spawnNoteSplash(x, y, note.noteData, note);
-			}
+			if(strum != null)
+				spawnNoteSplash(strum.x, strum.y, note.noteData, note);
 		}
 	}
 

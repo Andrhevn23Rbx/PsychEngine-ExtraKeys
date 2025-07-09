@@ -1,0 +1,50 @@
+name: Build - Windows Only
+
+on:
+  push:
+    branches:
+      - main
+      - experimental
+  pull_request:
+    branches:
+      - main
+      - experimental
+  workflow_dispatch:
+
+jobs:
+  buildWindows:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Haxe
+        uses: krdlab/setup-haxe@master
+        with:
+          haxe-version: latest
+
+      - name: Install Haxelib Dependencies
+        run: |
+          haxelib setup C:/haxelib
+          haxelib install hxcpp --quiet
+          haxe -cp ./setup -D analyzer-optimize -main Main --interp
+        shell: cmd
+
+      - name: Skip SScript Setup Mode
+        run: echo oy9:showMacroty8:loopCosti25y10:includeAllfg >> %USERPROFILE%/settings.cocoa
+        shell: cmd
+
+      - name: Create Version Tag
+        run: echo ${{ github.run_id }} > VERSION
+        shell: cmd
+
+      - name: Compile
+        run: haxelib run lime build windows --app-version="4.0.0-${{ github.run_id }}"
+        shell: cmd
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: windowsBuild
+          path: export/release/windows/bin

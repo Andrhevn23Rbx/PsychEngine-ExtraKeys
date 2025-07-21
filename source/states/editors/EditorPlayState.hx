@@ -44,71 +44,35 @@ class EditorPlayState extends MusicBeatSubstate
 	var lastRating:FlxSprite;
 	var lastCombo:FlxSprite;
 	var lastScore:Array<FlxSprite> = [];
-	var keysArray:Array<Dynamic> = [
-		[
-		'note_1'
-		],
-		[
-		'note_2a',
-		'note_2b'
-		],
-		[
-		'note_3a',
-		'note_3b',
-		'note_3c'
-		],
-		[
-		'note_left',
-		'note_down',
-		'note_up',
-		'note_right'
-		],
-		[
-		'note_5a',
-		'note_5b',
-		'note_5c',
-		'note_5d',
-		'note_5e'
-		],
-		[
-		'note_6a',
-		'note_6b',
-		'note_6c',
-		'note_6d',
-		'note_6e',
-		'note_6f'
-		],
-		[
-		'note_7a',
-		'note_7b',
-		'note_7c',
-		'note_7d',
-		'note_7e',
-		'note_7f',
-		'note_7g'
-		],
-		[
-		'note_8a',
-		'note_8b',
-		'note_8c',
-		'note_8d',
-		'note_8e',
-		'note_8f',
-		'note_8g',
-		'note_8h'
-		],
-		[
-		'note_9a',
-		'note_9b',
-		'note_9c',
-		'note_9d',
-		'note_9e',
-		'note_9f',
-		'note_9g',
-		'note_9h',
-		'note_9i'
-		]
-	];
+var keysArray:Array<Dynamic> = [
+	['note_1'],
+	['note_2a', 'note_2b'],
+	['note_3a', 'note_3b', 'note_3c'],
+	['note_left', 'note_down', 'note_up', 'note_right'],
+	['note_5a', 'note_5b', 'note_5c', 'note_5d', 'note_5e'],
+	['note_6a', 'note_6b', 'note_6c', 'note_6d', 'note_6e', 'note_6f'],
+	['note_7a', 'note_7b', 'note_7c', 'note_7d', 'note_7e', 'note_7f', 'note_7g'],
+	['note_8a', 'note_8b', 'note_8c', 'note_8d', 'note_8e', 'note_8f', 'note_8g', 'note_8h'],
+	['note_9a', 'note_9b', 'note_9c', 'note_9d', 'note_9e', 'note_9f', 'note_9g', 'note_9h', 'note_9i'],
+	['note_10a', 'note_10b', 'note_10c', 'note_10d', 'note_10e', 'note_10f', 'note_10g', 'note_10h', 'note_10i', 'note_10j'],
+	['note_11a', 'note_11b', 'note_11c', 'note_11d', 'note_11e', 'note_11f', 'note_11g', 'note_11h', 'note_11i', 'note_11j', 'note_11k'],
+	['note_12a', 'note_12b', 'note_12c', 'note_12d', 'note_12e', 'note_12f', 'note_12g', 'note_12h', 'note_12i', 'note_12j', 'note_12k', 'note_12l'],
+	['note_13a', 'note_13b', 'note_13c', 'note_13d', 'note_13e', 'note_13f', 'note_13g', 'note_13h', 'note_13i', 'note_13j', 'note_13k', 'note_13l', 'note_13m'],
+	['note_14a', 'note_14b', 'note_14c', 'note_14d', 'note_14e', 'note_14f', 'note_14g', 'note_14h', 'note_14i', 'note_14j', 'note_14k', 'note_14l', 'note_14m', 'note_14n'],
+	['note_15a', 'note_15b', 'note_15c', 'note_15d', 'note_15e', 'note_15f', 'note_15g', 'note_15h', 'note_15i', 'note_15j', 'note_15k', 'note_15l', 'note_15m', 'note_15n', 'note_15o'],
+	['note_16a', 'note_16b', 'note_16c', 'note_16d', 'note_16e', 'note_16f', 'note_16g', 'note_16h', 'note_16i', 'note_16j', 'note_16k', 'note_16l', 'note_16m', 'note_16n', 'note_16o', 'note_16p'],
+	['note_17a', 'note_17b', 'note_17c', 'note_17d', 'note_17e', 'note_17f', 'note_17g', 'note_17h', 'note_17i', 'note_17j', 'note_17k', 'note_17l', 'note_17m', 'note_17n', 'note_17o', 'note_17p', 'note_17q'],
+	['note_18a', 'note_18b', 'note_18c', 'note_18d', 'note_18e', 'note_18f', 'note_18g', 'note_18h', 'note_18i', 'note_18j', 'note_18k', 'note_18l', 'note_18m', 'note_18n', 'note_18o', 'note_18p', 'note_18q', 'note_18r'],
+	['note_19a', 'note_19b', 'note_19c', 'note_19d', 'note_19e', 'note_19f', 'note_19g', 'note_19h', 'note_19i', 'note_19j', 'note_19k', 'note_19l', 'note_19m', 'note_19n', 'note_19o', 'note_19p', 'note_19q', 'note_19r', 'note_19s'],
+	['note_20a', 'note_20b', 'note_20c', 'note_20d', 'note_20e', 'note_20f', 'note_20g', 'note_20h', 'note_20i', 'note_20j', 'note_20k', 'note_20l', 'note_20m', 'note_20n', 'note_20o', 'note_20p', 'note_20q', 'note_20r', 'note_20s', 'note_20t'],
+	['note_21a', 'note_21b', 'note_21c', 'note_21d', 'note_21e', 'note_21f', 'note_21g', 'note_21h', 'note_21i', 'note_21j', 'note_21k', 'note_21l', 'note_21m', 'note_21n', 'note_21o', 'note_21p', 'note_21q', 'note_21r', 'note_21s', 'note_21t', 'note_21u'],
+	['note_22a', 'note_22b', 'note_22c', 'note_22d', 'note_22e', 'note_22f', 'note_22g', 'note_22h', 'note_22i', 'note_22j', 'note_22k', 'note_22l', 'note_22m', 'note_22n', 'note_22o', 'note_22p', 'note_22q', 'note_22r', 'note_22s', 'note_22t', 'note_22u', 'note_22v'],
+	['note_23a', 'note_23b', 'note_23c', 'note_23d', 'note_23e', 'note_23f', 'note_23g', 'note_23h', 'note_23i', 'note_23j', 'note_23k', 'note_23l', 'note_23m', 'note_23n', 'note_23o', 'note_23p', 'note_23q', 'note_23r', 'note_23s', 'note_23t', 'note_23u', 'note_23v', 'note_23w'],
+	['note_24a', 'note_24b', 'note_24c', 'note_24d', 'note_24e', 'note_24f', 'note_24g', 'note_24h', 'note_24i', 'note_24j', 'note_24k', 'note_24l', 'note_24m', 'note_24n', 'note_24o', 'note_24p', 'note_24q', 'note_24r', 'note_24s', 'note_24t', 'note_24u', 'note_24v', 'note_24w', 'note_24x'],
+	['note_25a', 'note_25b', 'note_25c', 'note_25d', 'note_25e', 'note_25f', 'note_25g', 'note_25h', 'note_25i', 'note_25j', 'note_25k', 'note_25l', 'note_25m', 'note_25n', 'note_25o', 'note_25p', 'note_25q', 'note_25r', 'note_25s', 'note_25t', 'note_25u', 'note_25v', 'note_25w', 'note_25x', 'note_25y'],
+	['note_26a', 'note_26b', 'note_26c', 'note_26d', 'note_26e', 'note_26f', 'note_26g', 'note_26h', 'note_26i', 'note_26j', 'note_26k', 'note_26l', 'note_26m', 'note_26n', 'note_26o', 'note_26p', 'note_26q', 'note_26r', 'note_26s', 'note_26t', 'note_26u', 'note_26v', 'note_26w', 'note_26x', 'note_26y', 'note_26z']
+];
+
 	
 	var songHits:Int = 0;
 	var songMisses:Int = 0;
